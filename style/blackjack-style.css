@@ -1,9 +1,10 @@
 h1 {
   border: 2px white solid;
+
 }
 
 body {
-  background-color: black;
+  background-color: #666;
   color: blanchedalmond;
 }
 
@@ -17,8 +18,8 @@ body {
     padding : 10px;
     box-sizing: 10px 8px;
     color: #000;
-    height: 380px;
-    width: 250px;
+    height: 7.6em;
+    width: 5em;
 }
 
 #graphicHand {

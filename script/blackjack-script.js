@@ -90,7 +90,7 @@ startBtn.addEventListener('click', newGame);
 function newGame() {
   blackjackGame = new Blackjack();
   console.log(blackjackGame.hand);
-  startBtn.style.visibility = 'hidden';
+  startBtn.style.display = 'None';
   dealBtn.style.visibility = 'visible';
   return blackjackGame;
 }
@@ -143,6 +143,15 @@ function Blackjack() {
     console.assert(this.score > 0);
     this.hit();
     console.assert(this.score > 0);
+
+  this.win_lose = function() {
+    if (this.score == 21) {
+      console.log("21!");
+    }
+    if (this.score > 21) {
+      console.log("busted!");
+    }
+  }
 }
 
 
@@ -157,7 +166,10 @@ dealBtn.addEventListener('click', hitMe);
 function hitMe() {
   blackjackGame.hit();
 }
-
+dealBtn.addEventListener('click', win_lose);
+function win_lose() {
+  blackjackGame.win_lose(this.score);
+}
 let myDeck = new PlayingCards();
 console.log(myDeck.cards);
 
