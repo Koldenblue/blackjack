@@ -1,0 +1,25 @@
+.board-column {
+    background-image: linear-gradient(to bottom left, #FCC85F, #F3752B);
+    border:2px black solid;
+    margin-top:0;
+    padding:0;
+    border-radius: 8px;
+}
+
+.board-row {
+    height:100px;
+    margin-top:0;
+    padding:0;
+}
+
+.body {
+    background-color: #FFE7AD;
+}
+
+.board-space {
+    border: 2px black solid;
+    background-color: white;
+    border-radius: 50px;    margin-top:0;
+    padding:0;
+    height: 95px;
+}

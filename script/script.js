@@ -2,8 +2,21 @@
 
 "use strict"
 
+// change this later to have the user input the colors
 function main() {
-    ;
+    let player1 = new Player('red');
+    let player2 = new Player('blue');
+
+    // Create a new Board with 7 rows and 6 columns
+    // Later add a button to do this, with a column and row selector
+    let myBoard = new Board(7, 6);
+    console.log(myBoard.boardArray);
+}
+
+class Player {
+    constructor(color) {
+        this.color = color;
+    }
 }
 
 // Creates a new Connect 4 board
@@ -41,5 +54,11 @@ class Position extends Piece {
 
 }
 
-let myBoard = new Board(7, 6);
-console.log(myBoard.boardArray);
+function turn(player) {
+    let currentPiece = new Piece(playerColor);
+
+    // the user should be able to click on a container to put a piece there. Containers should glow (add shadow) on hover.
+    // once clicked, add piece to array.
+}
+
+
