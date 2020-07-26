@@ -10,16 +10,42 @@
     height:100px;
     margin-top:0;
     padding:0;
+    position: relative;
+    right: 50px;
 }
 
-.body {
+body {
     background-color: #FFE7AD;
 }
 
 .board-space {
     border: 2px black solid;
-    background-color: white;
+    background-color: #FFE7AD;
     border-radius: 50px;    margin-top:0;
     padding:0;
     height: 95px;
+}
+
+.board-space:hover {
+    box-shadow:  1px 1px 2px 2px aquamarine,  -1px -1px 2px 2px aquamarine;
+}
+
+@media screen and (max-width: 991px) {
+    .board-row {
+        height: 75px;
+    }
+    .board-space {
+        height: 72px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .board-row {
+        height: 50px;
+        width: 475px;
+        flex-wrap: nowrap;
+    }
+    .board-space {
+        height: 48px;
+    }
 }

@@ -9,7 +9,7 @@ function main() {
 
     // Create a new Board with 7 rows and 6 columns
     // Later add a button to do this, with a column and row selector
-    let myBoard = new Board(7, 6);
+    let myBoard = new Board(6, 7);
     console.log(myBoard.boardArray);
 }
 
@@ -21,17 +21,31 @@ class Player {
 
 // Creates a new Connect 4 board
 class Board {
-    constructor(columns, rows) {
-        this.columns = columns;
+    constructor(rows, columns) {
         this.rows = rows;
+        this.columns = columns;
         this.boardArray = [];
 
-        for (let c = 0; c < columns; c++) {
-            let colArray = [];
-            for (let r = 0; r < rows; r++) {
-                colArray.push(null);
+        // make Board array into a 2d array conisting of row arrays, each of which contain columns
+        // initialize with null Pieces of no color
+        for (let r = 0; r < rows; r++) {
+            let rowArray = [];
+            for (let c = 0; c < columns; c++) {
+                let nullPiece = new Piece(null);
+                rowArray.push(nullPiece);
             }
-            this.boardArray.push(colArray);
+            this.boardArray.push(rowArray);
+        }
+
+        // for each board space (class='board-space') add an id. Board spaces in the html will be in the order of 
+        // row 0 col 0, row 0 col 1, row 0 col 2, etc.
+        let spaces = document.getElementsByClassName('board-space');
+        let spaceNum = 0;
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < columns; c++) {
+                spaces[spaceNum].setAttribute("id", "row-" + r + "-col-" + c);
+                spaceNum++;
+            }
         }
     }
 }
@@ -54,11 +68,16 @@ class Position extends Piece {
 
 }
 
+function checkWin(boardArray) {
+
+}
+
 function turn(player) {
     let currentPiece = new Piece(playerColor);
 
-    // the user should be able to click on a container to put a piece there. Containers should glow (add shadow) on hover.
+    // the user should be able to click on a container to put a piece there.
     // once clicked, add piece to array.
 }
 
 
+main();
