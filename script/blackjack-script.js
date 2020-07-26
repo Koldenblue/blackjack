@@ -1,3 +1,9 @@
+/*import {test} from './modules/test-script.js'
+test();
+Modules won't work unless done through a server
+also script type needs to = 'module' */
+
+
 // Parent class Deck.
 function Deck(playerCount=4) {
   // Sets up an empty deck array.
