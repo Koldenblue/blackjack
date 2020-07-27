@@ -1,6 +1,8 @@
 // Connect 4 script
 
 "use strict"
+const ROWS = 6;
+const COLUMNS = 7;
 
 // change this later to have the user input the colors
 function main() {
@@ -9,7 +11,7 @@ function main() {
 
     // Create a new Board with 7 rows and 6 columns
     // Later add a button to do this, with a column and row selector
-    let myBoard = new Board(6, 7);
+    let myBoard = new Board(ROWS, COLUMNS);
     console.log(myBoard.boardArray);
 }
 
@@ -25,58 +27,87 @@ class Board {
         this.rows = rows;
         this.columns = columns;
         this.boardArray = [];
-
-        // make Board array into a 2d array conisting of row arrays, each of which contain columns
-        // initialize with null Pieces of no color
-        for (let r = 0; r < rows; r++) {
-            let rowArray = [];
-            for (let c = 0; c < columns; c++) {
-                let nullPiece = new Piece(null);
-                rowArray.push(nullPiece);
-            }
-            this.boardArray.push(rowArray);
-        }
+        this.idList = [];
 
         // for each board space (class='board-space') add an id. Board spaces in the html will be in the order of 
         // row 0 col 0, row 0 col 1, row 0 col 2, etc.
         let spaces = document.getElementsByClassName('board-space');
         let spaceNum = 0;
-        for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < this.rows; r++) {
+            let rowArray = [];
+            for (let c = 0; c < this.columns; c++) {
+                // add a nullpiece for each column in the row
+                let nullPiece = new Piece(null);
+                rowArray.push(nullPiece);
+
+                // add an id to each class="board-space" in the html
                 spaces[spaceNum].setAttribute("id", "row-" + r + "-col-" + c);
                 spaceNum++;
+
+                // also add the id names to an array
+                this.idList.push("row-" + r + "-col-" + c);
+
+                // next add an event listener to each empty class=board-space
+                spaces[spaceNum].addEventListener("click", this.move(c));
+            }
+            // put the row array, consisting of the 7 column spaces, into the 2D board array
+            this.boardArray.push(rowArray);
+        }
+    }
+
+    /** moves a piece and returns true. If move is invalid, return false.
+     * @param {Number} col */
+    move(col) {
+        // Check if appropriate column in last row is empty. If not, check previous row. Repeat until empty space is found,
+        // or top row is reached and no empty space found.
+        for (let r = this.rows - 1; r >= 0; r--) {
+            if (this.boardArray[r][col].color === null) {
+                // move piece
+                return true;
             }
         }
+        return false;
     }
 }
 
-/**
- * constructor for a piece
- */
-class Piece {
+
+
+/*** constructor for a piece */
+class Piece extends Position {
     constructor(color) {
+        super(x, y);
         this.color = color;
     }
 }
 
-class Position extends Piece {
+class Position {
     constructor(x, y) {
-        super(color);
         this.row = x;
         this.column = y;
     }
 
 }
 
-function checkWin(boardArray) {
-
+/*** Checks the board array at the end of each turn to see if a player has won.
+ * @param {Board} board Board object needed to access boardArray
+ * @param {Position} newLocation The location where the new piece has been placed */
+function checkWin(board, newLocation) {
+    ;
 }
 
-function turn(player) {
-    let currentPiece = new Piece(playerColor);
+
+/** * Lets a player choose a space by clicking. Once clicked on, the piece is put into that space, and the turn ends.
+ * @param {Player} player a player object with a color
+ * @param {Board} board a board object with lists of pieces and space ids */
+function turn(player, board) {
+    let currentPiece = new Piece(player.color);
 
     // the user should be able to click on a container to put a piece there.
     // once clicked, add piece to array.
+    // add event listener to each empty space
+    for (let i = 0, j = ) {
+        
+    }
 }
 
 
