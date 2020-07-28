@@ -3,16 +3,25 @@
 "use strict"
 const ROWS = 6;
 const COLUMNS = 7;
+const P1COLOR = 'red';
+const P2COLOR = 'blue';
 
 // change this later to have the user input the colors
 function main() {
-    let player1 = new Player('red');
-    let player2 = new Player('blue');
+    let player1 = new Player(P1COLOR);
+    let player2 = new Player(P2COLOR);
 
     // Create a new Board with 7 rows and 6 columns
     // Later add a button to do this, with a column and row selector
     let myBoard = new Board(ROWS, COLUMNS);
-    console.log(myBoard.boardArray);
+
+    while (true) {
+        player1.turn();
+        player2.turn();
+        if (checkWin(myBoard)) {
+            break;
+        }
+    }
 }
 
 class Player {
@@ -58,15 +67,7 @@ class Board {
     /** moves a piece and returns true. If move is invalid, return false.
      * @param {Number} col */
     move(col) {
-        // Check if appropriate column in last row is empty. If not, check previous row. Repeat until empty space is found,
-        // or top row is reached and no empty space found.
-        for (let r = this.rows - 1; r >= 0; r--) {
-            if (this.boardArray[r][col].color === null) {
-                // move piece
-                return true;
-            }
-        }
-        return false;
+        // pass appropriate col parameter to turn function, along with current player and the board state
     }
 }
 
@@ -99,14 +100,20 @@ function checkWin(board, newLocation) {
 /** * Lets a player choose a space by clicking. Once clicked on, the piece is put into that space, and the turn ends.
  * @param {Player} player a player object with a color
  * @param {Board} board a board object with lists of pieces and space ids */
-function turn(player, board) {
+function turn(col, player, board) {
     let currentPiece = new Piece(player.color);
 
+    // Check if appropriate column in last row is empty. If not, check previous row. Repeat until empty space is found,
+        // or top row is reached and no empty space found.
     // the user should be able to click on a container to put a piece there.
     // once clicked, add piece to array.
     // add event listener to each empty space
-    for (let i = 0, j = ) {
-        
+    for (let r = board.length - 1; r >= 0; r--) {
+        if (board.boardArray[r][col].color === null) {
+            let newPiece = new Piece(player.color);
+            board.boardArray[r][col] = newPiece;
+            // update graphical board state
+            // remove eventListener
     }
 }
 
