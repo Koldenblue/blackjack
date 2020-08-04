@@ -71,12 +71,12 @@ class Board {
         }
     }
 
-    /** moves a piece. If move is invalid, return false. */
+    /** moves a piece. If move is invalid, return false. targetColumn is assigned by the event listener, and depends on the space clicked.*/
     move = (targetColumn) => {      // arrow function binds board object to this function
         console.log("you clicked " + this);
         console.log(this)
 
-
+        // run turn function upon board click
         if (player1Turn) {
             console.log("player 1 turn")
             console.log(this.boardArray);
@@ -112,17 +112,20 @@ class Player {
         console.log("column is " + col)
         console.log(board)
         console.log("board is " + board.boardArray.length)
-        let currentPiece = new Piece(null, null, player.color);
+        // we have the column, the board object, and the player object.
 
         // Check if appropriate column in last row is empty. If not, check previous row. Repeat until empty space is found,
             // or top row is reached and no empty space found.
-        // the user should be able to click on a container to put a piece there.
         // once clicked, add piece to array.
-        // add event listener to each empty space
+        // Bottom row is highest, and top row is 0! So r is calculated here in descending order.
         for (let r = board.boardArray.length - 1; r >= 0; r--) {
             if (board.boardArray[r][col].color === null) {
-                let newPiece = new Piece(player.color);
+                let newPiece = new Piece(r, col, player.color);
                 board.boardArray[r][col] = newPiece;
+                let spaceId = "row-" + r + "-col-" + col;
+                console.log("id is " + spaceId);
+                $("#" + spaceId).attr("style", "background-color:" + player.color)
+                break;
                 // update graphical board state
                 // remove eventListener
             }
