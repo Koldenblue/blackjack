@@ -6,26 +6,25 @@ const COLUMNS = 7;
 const P1COLOR = 'red';
 const P2COLOR = 'blue';
 
-// change this later to have the user input the colors
-function main() {
-    let player1 = new Player(P1COLOR);
-    let player2 = new Player(P2COLOR);
-
-    // Create a new Board with 7 rows and 6 columns
-    // Later add a button to do this, with a column and row selector
-    let myBoard = new Board(ROWS, COLUMNS);
-
-    while (true) {
-        player1.turn();
-        player2.turn();
-        if (checkWin(myBoard)) {
-            break;
-        }
-    }
-}
 
 class Player {
     constructor(color) {
+        this.color = color;
+    }
+}
+
+
+class Position {
+    constructor(x, y) {
+        this.row = x;
+        this.column = y;
+    }
+}
+
+/*** constructor for a piece */
+class Piece extends Position {
+    constructor(x, y, color) {
+        super(x, y);
         this.color = color;
     }
 }
@@ -42,22 +41,28 @@ class Board {
         // row 0 col 0, row 0 col 1, row 0 col 2, etc.
         let spaces = document.getElementsByClassName('board-space');
         let spaceNum = 0;
+
         for (let r = 0; r < this.rows; r++) {
             let rowArray = [];
             for (let c = 0; c < this.columns; c++) {
                 // add a nullpiece for each column in the row
+                // console.log("spaces[spacenum] is " + spaces[spaceNum]);
                 let nullPiece = new Piece(null);
                 rowArray.push(nullPiece);
 
                 // add an id to each class="board-space" in the html
                 spaces[spaceNum].setAttribute("id", "row-" + r + "-col-" + c);
-                spaceNum++;
-
+                spaces[spaceNum].setAttribute("data-row", r);
+                spaces[spaceNum].setAttribute("data-column", c);
+                // console.log(spaces)
+                // console.log(spaceNum)
+                // console.log(spaces[spaceNum])
                 // also add the id names to an array
                 this.idList.push("row-" + r + "-col-" + c);
-
+                
                 // next add an event listener to each empty class=board-space
-                spaces[spaceNum].addEventListener("click", this.move(c));
+                spaces[spaceNum].addEventListener("click", this.move);
+                spaceNum++;
             }
             // put the row array, consisting of the 7 column spaces, into the 2D board array
             this.boardArray.push(rowArray);
@@ -67,27 +72,11 @@ class Board {
     /** moves a piece and returns true. If move is invalid, return false.
      * @param {Number} col */
     move(col) {
+        console.log("you clicked " + this)
         // pass appropriate col parameter to turn function, along with current player and the board state
     }
 }
 
-
-
-/*** constructor for a piece */
-class Piece extends Position {
-    constructor(color) {
-        super(x, y);
-        this.color = color;
-    }
-}
-
-class Position {
-    constructor(x, y) {
-        this.row = x;
-        this.column = y;
-    }
-
-}
 
 /*** Checks the board array at the end of each turn to see if a player has won.
  * @param {Board} board Board object needed to access boardArray
@@ -114,8 +103,23 @@ function turn(col, player, board) {
             board.boardArray[r][col] = newPiece;
             // update graphical board state
             // remove eventListener
+        }
     }
 }
 
 
-main();
+// change this later to have the user input the colors
+let player1 = new Player(P1COLOR);
+let player2 = new Player(P2COLOR);
+
+// Create a new Board with 7 rows and 6 columns
+// Later add a button to do this, with a column and row selector
+let myBoard = new Board(ROWS, COLUMNS);
+
+// while (true) {
+//     player1.turn();
+//     player2.turn();
+//     if (checkWin(myBoard)) {
+//         break;
+//     }
+// }
