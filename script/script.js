@@ -5,13 +5,8 @@ const ROWS = 6;
 const COLUMNS = 7;
 const P1COLOR = 'red';
 const P2COLOR = 'blue';
+let player1Turn = true;
 
-
-class Player {
-    constructor(color) {
-        this.color = color;
-    }
-}
 
 
 class Position {
@@ -25,6 +20,7 @@ class Position {
 class Piece extends Position {
     constructor(x, y, color) {
         super(x, y);
+        this.position = new Position(x, y);
         this.color = color;
     }
 }
@@ -47,21 +43,27 @@ class Board {
             for (let c = 0; c < this.columns; c++) {
                 // add a nullpiece for each column in the row
                 // console.log("spaces[spacenum] is " + spaces[spaceNum]);
-                let nullPiece = new Piece(null);
+                let nullPiece = new Piece(r, c, null);
+                // can access any piece row with myBoard.boardArray[0][0].position.row
                 rowArray.push(nullPiece);
 
                 // add an id to each class="board-space" in the html
                 spaces[spaceNum].setAttribute("id", "row-" + r + "-col-" + c);
                 spaces[spaceNum].setAttribute("data-row", r);
                 spaces[spaceNum].setAttribute("data-column", c);
-                // console.log(spaces)
-                // console.log(spaceNum)
-                // console.log(spaces[spaceNum])
+
                 // also add the id names to an array
                 this.idList.push("row-" + r + "-col-" + c);
                 
                 // next add an event listener to each empty class=board-space
-                spaces[spaceNum].addEventListener("click", this.move);
+                spaces[spaceNum].addEventListener("click", (event) => {
+                    console.log(this)
+                    console.log(event.target)
+                    let targetSpace = event.target;
+                    let targetColumn = targetSpace.getAttribute("data-column");
+                    console.log(targetColumn)
+                    this.move(targetColumn);
+                });
                 spaceNum++;
             }
             // put the row array, consisting of the 7 column spaces, into the 2D board array
@@ -69,10 +71,21 @@ class Board {
         }
     }
 
-    /** moves a piece and returns true. If move is invalid, return false.
-     * @param {Number} col */
-    move(col) {
-        console.log("you clicked " + this)
+    /** moves a piece. If move is invalid, return false. */
+    move = (targetColumn) => {      // arrow function binds board object to this function
+        console.log("you clicked " + this);
+        console.log(this)
+
+
+        if (player1Turn) {
+            console.log("player 1 turn")
+            console.log(this.boardArray);
+            console.log(this)
+            player1.turn(targetColumn, this, player1);
+        }
+        else {
+            player2.turn(targetColumn, this, player2);
+        }
         // pass appropriate col parameter to turn function, along with current player and the board state
     }
 }
@@ -82,31 +95,41 @@ class Board {
  * @param {Board} board Board object needed to access boardArray
  * @param {Position} newLocation The location where the new piece has been placed */
 function checkWin(board, newLocation) {
-    ;
+    return true;
 }
 
 
-/** * Lets a player choose a space by clicking. Once clicked on, the piece is put into that space, and the turn ends.
- * @param {Player} player a player object with a color
- * @param {Board} board a board object with lists of pieces and space ids */
-function turn(col, player, board) {
-    let currentPiece = new Piece(player.color);
+class Player {
+    constructor(color) {
+        this.color = color;
+    }
 
-    // Check if appropriate column in last row is empty. If not, check previous row. Repeat until empty space is found,
-        // or top row is reached and no empty space found.
-    // the user should be able to click on a container to put a piece there.
-    // once clicked, add piece to array.
-    // add event listener to each empty space
-    for (let r = board.length - 1; r >= 0; r--) {
-        if (board.boardArray[r][col].color === null) {
-            let newPiece = new Piece(player.color);
-            board.boardArray[r][col] = newPiece;
-            // update graphical board state
-            // remove eventListener
+    /** * Lets a player choose a space by clicking. Once clicked on, the piece is put into that space, and the turn ends.
+     * @param {Player} player a player object with a color
+     * @param {Board} board a board object with lists of pieces and space ids */
+    turn(col, board, player) {
+        console.log("turn function")
+        console.log("column is " + col)
+        console.log(board)
+        console.log("board is " + board.boardArray.length)
+        let currentPiece = new Piece(null, null, player.color);
+
+        // Check if appropriate column in last row is empty. If not, check previous row. Repeat until empty space is found,
+            // or top row is reached and no empty space found.
+        // the user should be able to click on a container to put a piece there.
+        // once clicked, add piece to array.
+        // add event listener to each empty space
+        for (let r = board.boardArray.length - 1; r >= 0; r--) {
+            if (board.boardArray[r][col].color === null) {
+                let newPiece = new Piece(player.color);
+                board.boardArray[r][col] = newPiece;
+                // update graphical board state
+                // remove eventListener
+            }
         }
+        return 
     }
 }
-
 
 // change this later to have the user input the colors
 let player1 = new Player(P1COLOR);
@@ -116,10 +139,13 @@ let player2 = new Player(P2COLOR);
 // Later add a button to do this, with a column and row selector
 let myBoard = new Board(ROWS, COLUMNS);
 
-// while (true) {
-//     player1.turn();
-//     player2.turn();
-//     if (checkWin(myBoard)) {
-//         break;
-//     }
-// }
+while (true) {
+    let moveLocation = player1.turn;
+    if (checkWin(myBoard, moveLocation)) {
+        break;
+    }
+    moveLocation = player2.turn;
+    if (checkWin(myBoard, moveLocation)) {
+        break;
+    }
+}
