@@ -130,7 +130,12 @@ class Player {
                 // remove eventListener
             }
         }
-        return 
+        if (player1Turn) {
+            player1Turn = false;
+        }
+        else {
+            player1Turn = true;
+        }
     }
 }
 
