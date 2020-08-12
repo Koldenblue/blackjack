@@ -5,18 +5,21 @@ const ROWS = 6;
 const COLUMNS = 7;
 const P1COLOR = 'red';
 const P2COLOR = 'blue';
+let player1;
+let player2;
+let myBoard;
 let player1Turn = true;
 
 $(document).ready(main);
 
 function main() {
     // change this later to have the user input the colors
-    let player1 = new Player(P1COLOR);
-    let player2 = new Player(P2COLOR);
+    player1 = new Player(P1COLOR);
+    player2 = new Player(P2COLOR);
 
     // Create a new Board with 7 rows and 6 columns
     // Later add a button to do this, with a column and row selector
-    let myBoard = new Board(ROWS, COLUMNS);
+    myBoard = new Board(ROWS, COLUMNS);
 }
 
 class Position {
@@ -40,8 +43,8 @@ class Board {
     constructor(rows, columns) {
         this.rows = rows;
         this.columns = columns;
-        // board array is a 2D array, where there are COLUMNS indices.
-        // Each index corresponds to a column array, and each column array has ROWS number of rows.
+        // board array is a 2D array, where there are ROWS indices.
+        // Each index corresponds to a row array, and each row array has COLUMNS number of columns.
         this.boardArray = [];
         this.idList = [];
 
@@ -103,15 +106,20 @@ class Board {
     }
 
     /*** Checks the board array at the end of each turn to see if a player has won.
+     * Given that the new piece location is known, only the pieces surrounding the new piece need be checked.
      * @param {Board} board Board object needed to access boardArray
      * @param {Position} newLocation The location where the new piece has been placed */
     checkWin(newPiece, playerColor) {
+        console.log("checking for wins...");
         console.log(this);
         console.log(newPiece);
         console.log(playerColor);
-        for (let r = this.boardArray.length - 1; r >= 0; r--) {
-            // for (let c = )
-                
+        console.log(this.boardArray);
+        // Bottom row is highest, and top row is 0! So r is calculated here in descending order.
+        for (let r = 0; r < this.rows; r++) {
+            for (let c = 0; c < this.columns; c++) {
+
+            }
         }
         return true;
     }
@@ -131,6 +139,7 @@ class Player {
         console.log("column is " + col)
         console.log(board)
         console.log("board is " + board.boardArray.length)
+        let newPiece;
         // we have the column, the board object, and the player object.
 
         // Check if appropriate column in last row is empty. If not, check previous row. Repeat until empty space is found,
@@ -139,7 +148,7 @@ class Player {
         // Bottom row is highest, and top row is 0! So r is calculated here in descending order.
         for (let r = board.boardArray.length - 1; r >= 0; r--) {
             if (board.boardArray[r][col].color === null) {
-                let newPiece = new Piece(r, col, player.color);
+                newPiece = new Piece(r, col, player.color);
                 board.boardArray[r][col] = newPiece;
                 let spaceId = "row-" + r + "-col-" + col;
                 console.log("id is " + spaceId);
