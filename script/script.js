@@ -7,7 +7,17 @@ const P1COLOR = 'red';
 const P2COLOR = 'blue';
 let player1Turn = true;
 
+$(document).ready(main);
 
+function main() {
+    // change this later to have the user input the colors
+    let player1 = new Player(P1COLOR);
+    let player2 = new Player(P2COLOR);
+
+    // Create a new Board with 7 rows and 6 columns
+    // Later add a button to do this, with a column and row selector
+    let myBoard = new Board(ROWS, COLUMNS);
+}
 
 class Position {
     constructor(x, y) {
@@ -30,6 +40,8 @@ class Board {
     constructor(rows, columns) {
         this.rows = rows;
         this.columns = columns;
+        // board array is a 2D array, where there are COLUMNS indices.
+        // Each index corresponds to a column array, and each column array has ROWS number of rows.
         this.boardArray = [];
         this.idList = [];
 
@@ -72,7 +84,8 @@ class Board {
     }
 
     /** moves a piece. If move is invalid, return false. targetColumn is assigned by the event listener, and depends on the space clicked.*/
-    move = (targetColumn) => {      // arrow function binds board object to this function
+    move = (targetColumn) => {
+        // arrow function binds board object to this function
         console.log("you clicked " + this);
         console.log(this)
 
@@ -88,14 +101,20 @@ class Board {
         }
         // pass appropriate col parameter to turn function, along with current player and the board state
     }
-}
 
-
-/*** Checks the board array at the end of each turn to see if a player has won.
- * @param {Board} board Board object needed to access boardArray
- * @param {Position} newLocation The location where the new piece has been placed */
-function checkWin(board, newLocation) {
-    return true;
+    /*** Checks the board array at the end of each turn to see if a player has won.
+     * @param {Board} board Board object needed to access boardArray
+     * @param {Position} newLocation The location where the new piece has been placed */
+    checkWin(newPiece, playerColor) {
+        console.log(this);
+        console.log(newPiece);
+        console.log(playerColor);
+        for (let r = this.boardArray.length - 1; r >= 0; r--) {
+            // for (let c = )
+                
+        }
+        return true;
+    }
 }
 
 
@@ -132,28 +151,24 @@ class Player {
         }
         if (player1Turn) {
             player1Turn = false;
+            board.checkWin(newPiece, player1.color)
         }
         else {
             player1Turn = true;
+            board.checkWin(newPiece, player2.color)
         }
     }
 }
 
-// change this later to have the user input the colors
-let player1 = new Player(P1COLOR);
-let player2 = new Player(P2COLOR);
 
-// Create a new Board with 7 rows and 6 columns
-// Later add a button to do this, with a column and row selector
-let myBoard = new Board(ROWS, COLUMNS);
 
-while (true) {
-    let moveLocation = player1.turn;
-    if (checkWin(myBoard, moveLocation)) {
-        break;
-    }
-    moveLocation = player2.turn;
-    if (checkWin(myBoard, moveLocation)) {
-        break;
-    }
-}
+    // while (true) {
+    //     let moveLocation = player1.turn;
+    //     if (checkWin(myBoard, moveLocation)) {
+    //         break;
+    //     }
+    //     moveLocation = player2.turn;
+    //     if (checkWin(myBoard, moveLocation)) {
+    //         break;
+    //     }
+    // }
