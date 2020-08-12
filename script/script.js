@@ -75,7 +75,7 @@ class Board {
                     console.log(this)
                     console.log(event.target)
                     let targetSpace = event.target;
-                    let targetColumn = targetSpace.getAttribute("data-column");
+                    let targetColumn = Number(targetSpace.getAttribute("data-column"));
                     console.log(targetColumn)
                     this.move(targetColumn);
                 });
@@ -86,7 +86,8 @@ class Board {
         }
     }
 
-    /** moves a piece. If move is invalid, return false. targetColumn is assigned by the event listener, and depends on the space clicked.*/
+    /** moves a piece. If move is invalid, return false. 
+     * targetColumn is assigned by the event listener created in the Board constructor, and depends on the space clicked.*/
     move = (targetColumn) => {
         // arrow function binds board object to this function
         console.log("you clicked " + this);
@@ -106,7 +107,6 @@ class Board {
     }
 
     /*** Checks the board array at the end of each turn to see if a player has won.
-     * Given that the new piece location is known, only the pieces surrounding the new piece need be checked.
      * @param {Board} board Board object needed to access boardArray
      * @param {Position} newLocation The location where the new piece has been placed */
     checkWin(newPiece, playerColor) {
@@ -115,7 +115,12 @@ class Board {
         console.log(newPiece);
         console.log(playerColor);
         console.log(this.boardArray);
-        // Bottom row is highest, and top row is 0! So r is calculated here in descending order.
+        // a connect 4 is possible in 4 directions - left-right, up-down, and diagonally each way
+        // Given that the new piece location is known, only the pieces surrounding the new piece need be checked.
+        // but it would probably be easier to check all pieces
+        // start at the new piece. subtract 3 from rows, columns, and rows and columns. then have to check row + 7, column +7,
+        // or row and column + 7 to see if colors match.
+        // handle index errors... set a min and max on row and columns
         for (let r = 0; r < this.rows; r++) {
             for (let c = 0; c < this.columns; c++) {
 
