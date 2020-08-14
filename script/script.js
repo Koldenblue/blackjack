@@ -121,9 +121,12 @@ class Board {
         // start at the new piece. subtract 3 from rows, columns, and rows and columns. then have to check row + 7, column +7,
         // or row and column + 7 to see if colors match.
         // handle index errors... set a min and max on row and columns
-        for (let r = 0; r < this.rows; r++) {
-            for (let c = 0; c < this.columns; c++) {
-
+        let r = Piece.row;
+        r < 0 ? r = 0 : r = r;
+        let c = Piece.column;
+        c < 0 ? c = 0 : c = c;
+        for (r; r < this.rows; r++) {
+            for (c; c < this.columns; c++) {
             }
         }
         return true;
@@ -140,11 +143,12 @@ class Player {
      * @param {Player} player a player object with a color
      * @param {Board} board a board object with lists of pieces and space ids */
     turn(col, board, player) {
-        console.log("turn function")
-        console.log("column is " + col)
-        console.log(board)
-        console.log("board is " + board.boardArray.length)
+        console.log("turn function");
+        console.log("column is " + col);
+        console.log(board);
+        console.log("board is " + board.boardArray.length);
         let newPiece;
+        let validMoveCheck = true;
         // we have the column, the board object, and the player object.
 
         // Check if appropriate column in last row is empty. If not, check previous row. Repeat until empty space is found,
@@ -157,19 +161,24 @@ class Player {
                 board.boardArray[r][col] = newPiece;
                 let spaceId = "row-" + r + "-col-" + col;
                 console.log("id is " + spaceId);
-                $("#" + spaceId).attr("style", "background-color:" + player.color)
+                $("#" + spaceId).attr("style", "background-color:" + player.color);
                 break;
                 // update graphical board state
                 // remove eventListener
             }
+            // account for case when move is not valid. This case will not be reached if loop is broken earlier.
+            if (r === 0) {
+                console.log("Invalid move!");
+                validMoveCheck = false;
+            }
         }
-        if (player1Turn) {
+        if (player1Turn && validMoveCheck) {
             player1Turn = false;
-            board.checkWin(newPiece, player1.color)
+            board.checkWin(newPiece, player1.color);
         }
-        else {
+        else if (!player1Turn && validMoveCheck) {
             player1Turn = true;
-            board.checkWin(newPiece, player2.color)
+            board.checkWin(newPiece, player2.color);
         }
     }
 }
