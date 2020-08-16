@@ -43,8 +43,8 @@ class Board {
     constructor(rows, columns) {
         this.rows = rows;
         this.columns = columns;
-        // board array is a 2D array, where there are ROWS indices.
-        // Each index corresponds to a row array, and each row array has COLUMNS number of columns.
+        // board array is a 2D array, where there are ROWS indices, and each row array has COLUMNS number of columns.
+        // So boardArray[rows][columns]
         this.boardArray = [];
         this.idList = [];
 
@@ -72,11 +72,11 @@ class Board {
                 
                 // next add an event listener to each empty class=board-space
                 spaces[spaceNum].addEventListener("click", (event) => {
-                    console.log(this)
-                    console.log(event.target)
+                    // console.log(this)
+                    // console.log(event.target)
                     let targetSpace = event.target;
                     let targetColumn = Number(targetSpace.getAttribute("data-column"));
-                    console.log(targetColumn)
+                    // console.log(targetColumn)
                     this.move(targetColumn);
                 });
                 spaceNum++;
@@ -95,9 +95,9 @@ class Board {
 
         // run turn function upon board click
         if (player1Turn) {
-            console.log("player 1 turn")
-            console.log(this.boardArray);
-            console.log(this)
+            // console.log("player 1 turn")
+            // console.log(this.boardArray);
+            // console.log(this)
             player1.turn(targetColumn, this, player1);
         }
         else {
@@ -109,27 +109,61 @@ class Board {
     /*** Checks the board array at the end of each turn to see if a player has won.
      * @param {Board} board Board object needed to access boardArray
      * @param {Position} newLocation The location where the new piece has been placed */
-    checkWin(newPiece, playerColor) {
-        console.log("checking for wins...");
-        console.log(this);
-        console.log(newPiece);
-        console.log(playerColor);
-        console.log(this.boardArray);
+    checkWin = (newPiece, playerColor) => {
+        // console.log("checking for wins...");
+        // console.log(this);
+        // console.log(newPiece);
+        // console.log(playerColor);
+        // console.log(this.boardArray);
+        // console.log(this.boardArray[1][1])
         // a connect 4 is possible in 4 directions - left-right, up-down, and diagonally each way
         // Given that the new piece location is known, only the pieces surrounding the new piece need be checked.
         // but it would probably be easier to check all pieces
         // start at the new piece. subtract 3 from rows, columns, and rows and columns. then have to check row + 7, column +7,
         // or row and column + 7 to see if colors match.
         // handle index errors... set a min and max on row and columns
-        let r = Piece.row;
+
+        // check for vertical wins:
+        let r = newPiece.row - 3;
+        console.log(newPiece.row)
+        console.log("===========================")
         r < 0 ? r = 0 : r = r;
-        let c = Piece.column;
-        c < 0 ? c = 0 : c = c;
-        for (r; r < this.rows; r++) {
-            for (c; c < this.columns; c++) {
+        let winCounter = 0;
+        for (r; r < ROWS; r++) {
+            console.log("---------------")
+            console.log("row is ", r)
+            console.log("c is ", newPiece.column)
+            console.log(this.boardArray[r][newPiece.column].color)
+            console.log("wincounter is ", winCounter)
+            if (this.boardArray[r][newPiece.column].color === playerColor) {
+                winCounter += 1;
+                console.log("win++")
+                if (winCounter === 4) {
+                    return true;
+                }
+            }
+            else {
+                winCounter = 0;
             }
         }
-        return true;
+
+        // check columns for horizontal wins:
+        let c = newPiece.column - 3;
+        console.log(newPiece.column)
+        c < 0 ? c = 0 : c = c;
+        let winCounter = 0;
+        for (c; c < ROWS; c++) {
+            if (this.boardArray[newPiece.row][c].color === playerColor) {
+                winCounter += 1;
+                if (winCounter === 4) {
+                    return true;
+                }
+            }
+            else {
+                winCounter = 0;
+            }
+        }
+        return false;
     }
 }
 
@@ -143,10 +177,10 @@ class Player {
      * @param {Player} player a player object with a color
      * @param {Board} board a board object with lists of pieces and space ids */
     turn(col, board, player) {
-        console.log("turn function");
-        console.log("column is " + col);
-        console.log(board);
-        console.log("board is " + board.boardArray.length);
+        // console.log("turn function");
+        // console.log("column is " + col);
+        // console.log(board);
+        // console.log("board is " + board.boardArray.length);
         let newPiece;
         let validMoveCheck = true;
         // we have the column, the board object, and the player object.
@@ -174,11 +208,15 @@ class Player {
         }
         if (player1Turn && validMoveCheck) {
             player1Turn = false;
-            board.checkWin(newPiece, player1.color);
+            if (board.checkWin(newPiece, player1.color)){
+                console.log("Player 1 wins!")
+            }
         }
         else if (!player1Turn && validMoveCheck) {
             player1Turn = true;
-            board.checkWin(newPiece, player2.color);
+            if (board.checkWin(newPiece, player2.color)){
+                console.log("player 2 wins!")
+            }
         }
     }
 }
