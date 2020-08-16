@@ -130,11 +130,11 @@ class Board {
         r < 0 ? r = 0 : r = r;
         let winCounter = 0;
         for (r; r < ROWS; r++) {
-            console.log("---------------")
-            console.log("row is ", r)
-            console.log("c is ", newPiece.column)
-            console.log(this.boardArray[r][newPiece.column].color)
-            console.log("wincounter is ", winCounter)
+            // console.log("---------------")
+            // console.log("row is ", r)
+            // console.log("c is ", newPiece.column)
+            // console.log(this.boardArray[r][newPiece.column].color)
+            // console.log("wincounter is ", winCounter)
             if (this.boardArray[r][newPiece.column].color === playerColor) {
                 winCounter += 1;
                 console.log("win++")
@@ -151,9 +151,56 @@ class Board {
         let c = newPiece.column - 3;
         console.log(newPiece.column)
         c < 0 ? c = 0 : c = c;
-        let winCounter = 0;
-        for (c; c < ROWS; c++) {
+        winCounter = 0;
+        for (c; c < COLUMNS; c++) {
             if (this.boardArray[newPiece.row][c].color === playerColor) {
+                winCounter += 1;
+                if (winCounter === 4) {
+                    return true;
+                }
+            }
+            else {
+                winCounter = 0;
+            }
+        }
+
+        // check for diagonal wins top left to bottom right
+        // first offset row and column by up to -3 from current position
+        r = newPiece.row;
+        c = newPiece.column;
+        let offsetCounter = 0;
+        while (r > 0 && c > 0 && offsetCounter < 3) {
+            r--;
+            c--;
+            offsetCounter++;
+        }
+        winCounter = 0;
+        for (r, c; r < ROWS && c < COLUMNS; r++, c++) {
+            if (this.boardArray[r][c].color === playerColor) {
+                winCounter += 1;
+                if (winCounter === 4) {
+                    return true;
+                }
+            }
+            else {
+                winCounter = 0;
+            }
+        }
+
+        // last check for diagonal wins, bottom left to top right
+        r = newPiece.row;
+        c = newPiece.column;
+        offsetCounter = 0;
+        // r < ROWS - 1 because max row is excluded
+        while (r < ROWS -1 && c > 0 && offsetCounter < 3) {
+            r++;
+            c--;
+            offsetCounter++;
+        }
+        winCounter = 0;
+        // r >= 0 because row 0 is included
+        for (r, c; r >= 0 && c < COLUMNS; r--, c++) {
+            if (this.boardArray[r][c].color === playerColor) {
                 winCounter += 1;
                 if (winCounter === 4) {
                     return true;
@@ -220,16 +267,3 @@ class Player {
         }
     }
 }
-
-
-
-    // while (true) {
-    //     let moveLocation = player1.turn;
-    //     if (checkWin(myBoard, moveLocation)) {
-    //         break;
-    //     }
-    //     moveLocation = player2.turn;
-    //     if (checkWin(myBoard, moveLocation)) {
-    //         break;
-    //     }
-    // }
