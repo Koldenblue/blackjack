@@ -257,12 +257,16 @@ class Player {
             player1Turn = false;
             if (board.checkWin(newPiece, player1.color)){
                 console.log("Player 1 wins!")
+                $(".win-indicator").text("Player 1\n Wins!");
+                $(".win-indicator").slideToggle("slow");
             }
         }
         else if (!player1Turn && validMoveCheck) {
             player1Turn = true;
             if (board.checkWin(newPiece, player2.color)){
                 console.log("player 2 wins!")
+                $(".win-indicator").text("Player 2\n Wins!");
+                $(".win-indicator").slideToggle("slow");
             }
         }
     }
