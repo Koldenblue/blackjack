@@ -1,0 +1,20 @@
+{
+  "name": "blackjack",
+  "version": "1.0.0",
+  "description": "## Connect 4 Deployed website can be found at https://koldenblue.github.io/games-websites/.",
+  "main": "blackjack.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc --watch script/blackjack-script.ts --strictNullChecks"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Koldenblue/games-websites.git"
+  },
+  "author": "Kevin Miller",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Koldenblue/games-websites/issues"
+  },
+  "homepage": "https://github.com/Koldenblue/games-websites#readme"
+}
