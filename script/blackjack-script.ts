@@ -5,7 +5,7 @@ also script type needs to = 'module' */
 
 
 // Parent class Deck.
-function Deck(playerCount=4) {
+function Deck(this: any, playerCount=4): void {
   // Sets up an empty deck array.
   this.cardsInDeck = [];
   this.playerCount = playerCount;
@@ -34,7 +34,7 @@ function Deck(playerCount=4) {
     }
   }
 
-  this.shuffle = function() {
+  this.shuffle = function(): void {
     ;
   }
 
@@ -55,7 +55,7 @@ function Deck(playerCount=4) {
 
 
 // child of Deck class:
-function PlayingCards(playerCount=4): void {
+function PlayingCards(this: any, playerCount=4): void {
   // Inherit the properties of the Deck class:
   Deck.call(this);
 
@@ -105,7 +105,7 @@ function newGame() {
 /** 
  *  Child class for blackjack game. Contains blackjack rules functions.
  */
-function Blackjack() {
+function Blackjack(this: any) {
   // create a new 52 card deck for one player.
   PlayingCards.call(this, 1);
   // initialize score for player

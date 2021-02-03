@@ -1,3 +1,4 @@
+"use strict";
 /*import {test} from './modules/test-script.js'
 test();
 Modules won't work unless done through a server
